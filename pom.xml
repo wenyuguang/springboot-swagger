@@ -56,12 +56,10 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-smile</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-afterburner</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.restdocs</groupId>
@@ -91,7 +89,7 @@
 		</dependency>
 	</dependencies>
 
-	<pluginRepositories>
+<!-- 	<pluginRepositories>
 		<pluginRepository>
 			<id>jcenter-snapshots</id>
 			<name>jcenter</name>
@@ -105,7 +103,7 @@
 			<name>jcenter</name>
 			<url>http://jcenter.bintray.com</url>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> -->
 
 	<build>
 		<plugins>
@@ -116,7 +114,7 @@
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.3</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
                     <compilerVersion>${java.version}</compilerVersion>
                     <source>${java.version}</source>
@@ -181,8 +179,7 @@
                 </executions>
             </plugin>
 
-            <!-- Run the generated asciidoc through Asciidoctor to generate
-                 other documentation types, such as PDFs or HTML5 -->
+            <!-- Run the generated asciidoc through Asciidoctor to generate other documentation types, such as PDFs or HTML5 -->
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -215,8 +212,7 @@
                         <generated>${generated.asciidoc.directory}</generated>
                     </attributes>
                 </configuration>
-                <!-- Since each execution can only handle one backend, run
-                     separate executions for each desired output type -->
+                <!-- Since each execution can only handle one backend, run separate executions for each desired output type -->
                 <executions>
                     <execution>
                         <id>output-html</id>
@@ -246,7 +242,7 @@
             </plugin>
 
             <!-- specify the main class for the manifest -->
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
@@ -259,10 +255,10 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
+            </plugin> -->
 
             <!-- copy dependencies to the lib directory -->
-            <plugin>
+            <!-- <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
@@ -275,12 +271,12 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 
             <!-- copy the generated documents -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.0</version><!--$NO-MVN-MAN-VER$-->
                 <executions>
                     <execution>
                         <id>copy-resources</id>

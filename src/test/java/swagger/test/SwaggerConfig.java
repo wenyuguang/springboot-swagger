@@ -42,8 +42,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Swagger Petstore")
-                .description("Petstore API Description")
+                .title("api test")
+                .description("this is a API Description")
                 .contact(new Contact("TestName", "http:/test-url.com", "test@test.de"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
