@@ -22,16 +22,16 @@ public class SpringbootSwaggerApplication {
 		SpringApplication.run(SpringbootSwaggerApplication.class, args);
 	}
 
-	@Bean
-    public Module jacksonAfterBurnerModule() {
-        return new AfterburnerModule();
-    }
+//	@Bean
+//    public Module jacksonAfterBurnerModule() {
+//        return new AfterburnerModule();
+//    }
 
-    @Bean
-    public HttpMessageConverter<Object> httpSmileJackson2MessageConverter() {
-        return new AbstractJackson2HttpMessageConverter(
-                new ObjectMapper(new SmileFactory()).registerModule(new AfterburnerModule()),
-                new MediaType("application", "x-jackson-smile")) {
-        };
-    }
+//    @Bean
+//    public HttpMessageConverter<Object> httpSmileJackson2MessageConverter() {
+//        return new AbstractJackson2HttpMessageConverter(
+//                new ObjectMapper(new SmileFactory()).registerModule(new AfterburnerModule()),
+//                new MediaType("application", "x-jackson-smile")) {
+//        };
+//    }
 }

@@ -1,79 +1,60 @@
 package swagger.test.autoconfig;
 
+import static java.util.Arrays.asList;
+import static springfox.documentation.builders.PathSelectors.ant;
+
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.google.common.base.Predicates;
+
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.ImplicitGrant;
+import springfox.documentation.service.LoginEndpoint;
+import springfox.documentation.service.OAuth;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.DocExpansion;
-import springfox.documentation.swagger.web.ModelRendering;
-import springfox.documentation.swagger.web.OperationsSorter;
-import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
-import springfox.documentation.swagger.web.TagsSorter;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger.web.UiConfigurationBuilder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//@Configuration
+@EnableSwagger2
+@Configuration
 public class Swagger2Config {
 
+	@SuppressWarnings("unchecked")
 	@Bean
-	public Docket createRestApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(apiInfo())
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("swagger.test"))
-				.paths(PathSelectors.any())
-				.build()
-				.pathMapping("/");
-	}
-	
-	@Bean
-	public SecurityConfiguration security() {
-	    return SecurityConfigurationBuilder.builder()
-	        .clientId("test-app-client-id")
-	        .clientSecret("test")
-	        .realm("test-app-realm")
-	        .appName("test-app")
-	        .scopeSeparator(",")
-	        .additionalQueryStringParams(null)
-	        .useBasicAuthenticationWithAccessCodeGrant(false)
-	        .build();
-	  }
-	
-	@Bean
-	public UiConfiguration uiConfig() {
-	    return UiConfigurationBuilder.builder()
-	        .deepLinking(true)
-	        .displayOperationId(false)
-	        .defaultModelsExpandDepth(1)
-	        .defaultModelExpandDepth(1)
-	        .defaultModelRendering(ModelRendering.EXAMPLE)
-	        .displayRequestDuration(false)
-	        .docExpansion(DocExpansion.NONE)
-	        .filter(false)
-	        .maxDisplayedTags(null)
-	        .operationsSorter(OperationsSorter.ALPHA)
-	        .showExtensions(false)
-	        .tagsSorter(TagsSorter.ALPHA)
-	        .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
-	        .validatorUrl(null)
-	        .build();
-	  }
-	
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("springboot利用swagger构建api文档---测试")
-				.description("当前jar包功能提供等详细说明，可以添加url等信息")
-				.termsOfServiceUrl("http://ip:8080/swagger-ui.html")
-				.version("1.0")	
-				.contact(new Contact("张三", "url地址", "邮箱地址"))
-				.license("智诚汇通版权所有")
-				.build();
-	}
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .securitySchemes(asList(
+                        new OAuth(
+                            "auth",
+                            asList(new AuthorizationScope("write_pets", "modify pets in your account"),
+                                    new AuthorizationScope("read_pets", "read your pets")),
+                                Arrays.<GrantType>asList(new ImplicitGrant(new LoginEndpoint("http://test.url"), "tokenName"))
+                        ),
+                        new ApiKey("api_key", "api_key", "header")
+                ))
+                .select()
+                .paths(Predicates.and(ant("/**"), Predicates.not(ant("/error")), Predicates.not(ant("/management/**")), Predicates.not(ant("/management*"))))
+                .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("api test")
+                .description("this is a API Description")
+                .contact(new Contact("张三", "http://test-url.com", "test@test.de"))
+                .license("No license")
+                .licenseUrl("No license")
+                .termsOfServiceUrl("No license")
+                .version("1.0.0")
+                .build();
+    }
 }
